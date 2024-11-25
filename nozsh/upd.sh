@@ -3,7 +3,6 @@
 BASE_DIR="nozsh"
 BLOG_DIR="$BASE_DIR/blog"
 KB_DIR="$BASE_DIR/kb"
-XCOM_DIR="$BASE_DIR/xcom"
 HOME_DIR="$BASE_DIR/home"
 
 clean_and_pull() {
@@ -56,18 +55,6 @@ update_knowledge_base() {
     echo "- Done!"
 }
 
-update_xcom() {
-    echo -e -n "- Update XCOM\n\n"
-
-    echo "- cd to $XCOM_DIR"
-    cd $XCOM_DIR
-    echo
-
-    git_pull_only
-
-    echo "- Done!"
-}
-
 update_home() {
     echo -e -n "- Update Home\n\n"
 
@@ -79,10 +66,14 @@ update_home() {
 
     generate_hugo_content
 
+    cp static/sitemap.xml public/sitemap.xml
+    cp static/index.html public/index.html
+    cp static/404.html public/404.html
+
     echo "- Done!"
 }
 
-message="- [01]: Update Blog \n- [02]: Update Knowledge Base \n- [03]: Update XCOM \n- [04]: Update Home \n- [**]: Exit"
+message="- [01]: Update Blog \n- [02]: Update Knowledge Base \n- [03]: Update Home \n- [**]: Exit"
 
 echo -e -n "\n" && echo "- Update Script"
 echo -e -n "\n"
@@ -93,11 +84,10 @@ read -p $'- $: ' choice
 case "$choice" in
     1) update_blog ;;
     2) update_knowledge_base ;;
-    3) update_xcom ;;
-    4) update_home ;;
+    3) update_home ;;
     *) clear
-       echo -e -n "- Update Script\n"
-       echo -e -n "- EXIT\n"
-       exit 0
-       ;;
+        echo -e -n "- Update Script\n"
+        echo -e -n "- EXIT\n"
+        exit 0
+        ;;
 esac
