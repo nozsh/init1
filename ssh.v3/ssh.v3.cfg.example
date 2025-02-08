@@ -1,4 +1,4 @@
-hostname user ip
+hostname user ip port[if not specified, it be 22]
 myserver root 11.11.11.11
 yourserver me 01.01.01.01 2959
 support multiple machines
