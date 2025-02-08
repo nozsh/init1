@@ -28,8 +28,9 @@ done
 connect_to_hostmachine() {
   local user=$1
   local ip=$2
-  echo "Executing command: ssh $user@$ip"  # Output SSH command
-  ssh "$user@$ip"
+  local port=${3:-22}  # Default port is 22
+  echo "Executing command: ssh $user@$ip -p $port"  # Output SSH command
+  ssh "$user@$ip" -p "$port"
 }
 
 # Table Message
@@ -49,12 +50,13 @@ echo -e -n "\n"
 # Handling user choice
 if [[ $choice =~ ^[0-9]+$ && $choice -le ${#hostmachine[@]} ]]; then
   hostmachine_info=(${hostmachine[$((choice - 1))]})
-  if [[ ${#hostmachine_info[@]} -ne 3 ]]; then
+  if [[ ${#hostmachine_info[@]} -ne 3 && ${#hostmachine_info[@]} -ne 4 ]]; then
     echo "Invalid host information: ${hostmachine_info[@]}"
     exit 1
   fi
+  
   echo "Selected host info: ${hostmachine_info[@]}"  # Output selected host info
-  connect_to_hostmachine "${hostmachine_info[1]}" "${hostmachine_info[2]}"
+  connect_to_hostmachine "${hostmachine_info[1]}" "${hostmachine_info[2]}" "${hostmachine_info[3]:-22}"
 else
   echo -e -n "- EXIT\n"
   exit 0
